@@ -20,9 +20,11 @@
    (sql/do-commands "CREATE INDEX timestamp_index ON guestbook (timestamp)")))
 
 (defn table-exists [table-name]
-  (not 
+  (sql/with-connection
+   db
+   (not 
     (nil? 
-      (sql/with-query-results rs [(str "SHOW TABLES LIKE \"" table-name "\"")] (first rs)))))
+      (sql/with-query-results rs [(str "SHOW TABLES LIKE \"" table-name "\"")] (first rs))))))
 
 (defn read-guests []
   (sql/with-connection
